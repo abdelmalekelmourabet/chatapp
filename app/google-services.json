@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "546977169814",
+    "firebase_url": "https://chatapp-c7097.firebaseio.com",
+    "project_id": "chatapp-c7097",
+    "storage_bucket": "chatapp-c7097.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:546977169814:android:55c3f1ad371be825961db7",
+        "android_client_info": {
+          "package_name": "com.hva.chatapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "546977169814-rg4muo5jkj4cvugoel4adjm03kas73jc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHl_qLQDSAvPxuajqnBMy1isoKZ9ukbIo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "546977169814-rg4muo5jkj4cvugoel4adjm03kas73jc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
