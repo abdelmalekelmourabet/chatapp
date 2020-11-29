@@ -39,17 +39,17 @@ class SignupActivity : AppCompatActivity() {
         }
 
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener {
-                    if (!it.isSuccessful) return@addOnCompleteListener
+            .addOnCompleteListener {
+                if (!it.isSuccessful) return@addOnCompleteListener
 
-                    it.result?.user?.let { it1 -> saveUserToFirebase(it1.uid) }
-                    Log.d("signup", "save user in db")
+                it.result?.user?.let { it1 -> saveUserToFirebase(it1.uid) }
+                Log.d("signup", "save user in db")
 
-                }
+            }
 
-                .addOnFailureListener {
-                    Toast.makeText(this, failedCreateUser + " ${it.message}", Toast.LENGTH_SHORT).show()
-                }
+            .addOnFailureListener {
+                Toast.makeText(this, failedCreateUser + " ${it.message}", Toast.LENGTH_SHORT).show()
+            }
 
 
     }
@@ -59,20 +59,19 @@ class SignupActivity : AppCompatActivity() {
         val user = User(uid, etUsernameRegister.text.toString(), etEmailRegister.text.toString())
 
         ref.setValue(user)
-                .addOnSuccessListener {
+            .addOnSuccessListener {
 
-                    val intent = Intent(this, ChatActivity::class.java)
+                val intent = Intent(this, ChatActivity::class.java)
 
-                    //Prevent going back to Signup page
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    startActivity(intent)
+                //Prevent going back to Signup page
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
 
 
-                }
-                .addOnFailureListener {
-                    Log.d("signup", "Failed to set value to database: ${it.message}")
-                }
+            }
+            .addOnFailureListener {
+                Log.d("signup", "Failed to set value to database: ${it.message}")
+            }
     }
 }
 
-class User(val uid: String, val username: String, val email: String)
