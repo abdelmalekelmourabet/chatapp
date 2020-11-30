@@ -13,6 +13,8 @@ import kotlinx.android.synthetic.main.chat_right.view.*
 class ChatLogActivity : AppCompatActivity() {
     val adapter = GroupAdapter<GroupieViewHolder>()
 
+    var toUser: User? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat_log)
@@ -20,8 +22,8 @@ class ChatLogActivity : AppCompatActivity() {
         rvChatLog.adapter = adapter
 
         //Print username in Chat Log
-        val user = intent.getParcelableExtra<User>(NewChatActivity.USER_KEY)
-        supportActionBar?.title = user?.username
+        toUser = intent.getParcelableExtra<User>(NewChatActivity.USER_KEY)
+        supportActionBar?.title = toUser?.username
 
         listenForMessages()
 
@@ -33,7 +35,10 @@ class ChatLogActivity : AppCompatActivity() {
 
 
     private fun listenForMessages() {
-        val ref = FirebaseDatabase.getInstance().getReference("/messages")
+        val fromId = FirebaseAuth.getInstance().uid
+        val toId = toUser?.uid
+        val ref = FirebaseDatabase.getInstance().getReference("/user-messages/$fromId/$toId")
+        //val ref = FirebaseDatabase.getInstance().getReference("/messages")
         ref.addChildEventListener(object : ChildEventListener {
 
             override fun onChildAdded(p0: DataSnapshot, p1: String?) {
@@ -41,9 +46,9 @@ class ChatLogActivity : AppCompatActivity() {
                 if (chatMessage != null) {
                     Log.d("chatlog", chatMessage.text)
                     if (chatMessage.toId == FirebaseAuth.getInstance().uid) {
-                        adapter.add(ChatLeftItem(chatMessage.text))
+                        adapter.add(ChatLeftItem(chatMessage.text, toUser!!))
                     } else {
-                        adapter.add(ChatRightItem(chatMessage.text))
+                        adapter.add(ChatRightItem(chatMessage.text, toUser!!))
                     }
                 }
 
@@ -67,13 +72,21 @@ class ChatLogActivity : AppCompatActivity() {
 
         if (fromId == null || toId == null) return
 
-        val reference = FirebaseDatabase.getInstance().getReference("/messages").push()
+        val reference =
+            FirebaseDatabase.getInstance().getReference("/user-messages/$fromId/$toId").push()
+
+        val toReference =
+            FirebaseDatabase.getInstance().getReference("/user-messages/$toId/$fromId").push()
         val chatMessage =
             ChatMessage(reference.key!!, text, fromId, toId, System.currentTimeMillis())
 
         reference.setValue(chatMessage)
             .addOnSuccessListener {
                 Log.d("chatlog", "saved our message ${reference.key}")
+                etChatLog.text.clear()
+                rvChatLog.scrollToPosition(adapter.itemCount - 1)
             }
+
+        toReference.setValue(chatMessage)
     }
 }

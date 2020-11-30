@@ -3,7 +3,7 @@ package com.hva.chatapp
 import com.xwray.groupie.*
 import kotlinx.android.synthetic.main.chat_left.view.*
 
-class ChatLeftItem(val text: String) : Item<GroupieViewHolder>() {
+class ChatLeftItem(val text: String, val user: User) : Item<GroupieViewHolder>() {
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         viewHolder.itemView.tvLeft.text = text
     }
