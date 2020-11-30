@@ -4,28 +4,58 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import com.xwray.groupie.*
 import kotlinx.android.synthetic.main.activity_chat_log.*
 import kotlinx.android.synthetic.main.chat_left.view.*
 import kotlinx.android.synthetic.main.chat_right.view.*
 
 class ChatLogActivity : AppCompatActivity() {
+    val adapter = GroupAdapter<GroupieViewHolder>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat_log)
 
+        rvChatLog.adapter = adapter
+
         //Print username in Chat Log
-        //val username= intent.getStringExtra(NewChatActivity.USER_KEY)
         val user = intent.getParcelableExtra<User>(NewChatActivity.USER_KEY)
         supportActionBar?.title = user?.username
 
-
+        listenForMessages()
 
         btnSend.setOnClickListener {
             Log.d("chatlog", "attempt to send message")
             performSendMessage()
         }
+    }
+
+
+    private fun listenForMessages() {
+        val ref = FirebaseDatabase.getInstance().getReference("/messages")
+        ref.addChildEventListener(object : ChildEventListener {
+
+            override fun onChildAdded(p0: DataSnapshot, p1: String?) {
+                val chatMessage = p0.getValue(ChatMessage::class.java)
+                if (chatMessage != null) {
+                    Log.d("chatlog", chatMessage.text)
+                    if (chatMessage.toId == FirebaseAuth.getInstance().uid) {
+                        adapter.add(ChatLeftItem(chatMessage.text))
+                    } else {
+                        adapter.add(ChatRightItem(chatMessage.text))
+                    }
+                }
+
+
+            }
+
+            // necessarily but not needed
+            override fun onCancelled(p0: DatabaseError) {}
+            override fun onChildChanged(p0: DataSnapshot, p1: String?) {}
+            override fun onChildMoved(p0: DataSnapshot, p1: String?) {}
+            override fun onChildRemoved(p0: DataSnapshot) {}
+        })
     }
 
     // post message in firebase
@@ -46,35 +76,4 @@ class ChatLogActivity : AppCompatActivity() {
                 Log.d("chatlog", "saved our message ${reference.key}")
             }
     }
-}
-
-
-class ChatRightItem(val text: String) : Item<GroupieViewHolder>() {
-    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-        viewHolder.itemView.tvRight.text = text
-    }
-
-    override fun getLayout(): Int {
-        return R.layout.chat_right
-    }
-}
-
-class ChatLeftItem(val text: String) : Item<GroupieViewHolder>() {
-    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-        viewHolder.itemView.tvLeft.text = text
-    }
-
-    override fun getLayout(): Int {
-        return R.layout.chat_left
-    }
-}
-
-class ChatMessage(
-    val id: String,
-    val text: String,
-    val fromId: String,
-    val toId: String,
-    val timestamp: Long
-) {
-    constructor() : this("", "", "", "", -1)
 }
