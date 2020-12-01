@@ -53,8 +53,7 @@ class NewChatActivity : AppCompatActivity() {
                 rv_newchat.adapter = adapter
             }
 
-            override fun onCancelled(p0: DatabaseError) {
-            }
+            override fun onCancelled(p0: DatabaseError) {       }
         })
     }
 
