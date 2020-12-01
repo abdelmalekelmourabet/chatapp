@@ -61,7 +61,7 @@ class SignupActivity : AppCompatActivity() {
         ref.setValue(user)
             .addOnSuccessListener {
 
-                val intent = Intent(this, ChatActivity::class.java)
+                val intent = Intent(this, HomeActivity::class.java)
 
                 //Prevent going back to Signup page
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)

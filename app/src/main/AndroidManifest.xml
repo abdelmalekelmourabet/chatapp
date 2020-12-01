@@ -12,14 +12,14 @@
         <activity android:name=".ChatLogActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ChatActivity" />
+                android:value=".HomeActivity" />
         </activity>
         <activity android:name=".NewChatActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ChatActivity" />
+                android:value=".HomeActivity" />
         </activity>
-        <activity android:name=".ChatActivity">
+        <activity android:name=".HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

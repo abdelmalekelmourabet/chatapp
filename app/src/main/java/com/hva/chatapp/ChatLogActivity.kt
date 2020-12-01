@@ -38,7 +38,6 @@ class ChatLogActivity : AppCompatActivity() {
         val fromId = FirebaseAuth.getInstance().uid
         val toId = toUser?.uid
         val ref = FirebaseDatabase.getInstance().getReference("/user-messages/$fromId/$toId")
-        //val ref = FirebaseDatabase.getInstance().getReference("/messages")
         ref.addChildEventListener(object : ChildEventListener {
 
             override fun onChildAdded(p0: DataSnapshot, p1: String?) {
@@ -47,12 +46,12 @@ class ChatLogActivity : AppCompatActivity() {
                     Log.d("chatlog", chatMessage.text)
                     if (chatMessage.toId == FirebaseAuth.getInstance().uid) {
                         adapter.add(ChatLeftItem(chatMessage.text, toUser!!))
+                        rvChatLog.scrollToPosition(adapter.itemCount - 1)
                     } else {
                         adapter.add(ChatRightItem(chatMessage.text, toUser!!))
+                        rvChatLog.scrollToPosition(adapter.itemCount - 1)
                     }
                 }
-
-
             }
 
             // necessarily but not needed
@@ -60,6 +59,7 @@ class ChatLogActivity : AppCompatActivity() {
             override fun onChildChanged(p0: DataSnapshot, p1: String?) {}
             override fun onChildMoved(p0: DataSnapshot, p1: String?) {}
             override fun onChildRemoved(p0: DataSnapshot) {}
+
         })
     }
 
@@ -88,5 +88,10 @@ class ChatLogActivity : AppCompatActivity() {
             }
 
         toReference.setValue(chatMessage)
+
+        val homeRef = FirebaseDatabase.getInstance().getReference("/home-messages/$fromId/$toId")
+        val homeToRef = FirebaseDatabase.getInstance().getReference("/home-messages/$toId/$fromId")
+        homeRef.setValue(chatMessage)
+        homeToRef.setValue(chatMessage)
     }
 }
