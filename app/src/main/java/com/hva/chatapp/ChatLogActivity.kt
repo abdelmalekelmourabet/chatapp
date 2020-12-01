@@ -46,12 +46,11 @@ class ChatLogActivity : AppCompatActivity() {
                     Log.d("chatlog", chatMessage.text)
                     if (chatMessage.toId == FirebaseAuth.getInstance().uid) {
                         adapter.add(ChatLeftItem(chatMessage.text, toUser!!))
-                        rvChatLog.scrollToPosition(adapter.itemCount - 1)
                     } else {
                         adapter.add(ChatRightItem(chatMessage.text, toUser!!))
-                        rvChatLog.scrollToPosition(adapter.itemCount - 1)
                     }
                 }
+                rvChatLog.scrollToPosition(adapter.itemCount - 1)
             }
 
             // necessarily but not needed

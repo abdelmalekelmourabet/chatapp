@@ -11,6 +11,8 @@ import kotlinx.android.synthetic.main.home_item.view.*
 
 
 class HomeItem(val chatMessage: ChatMessage) : Item<GroupieViewHolder>() {
+    var chatFriendUser: User? = null
+
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         viewHolder.itemView.tvLatestMessage.text = chatMessage.text
 
@@ -22,12 +24,12 @@ class HomeItem(val chatMessage: ChatMessage) : Item<GroupieViewHolder>() {
             chatFriendId = chatMessage.fromId
         }
 
-        // Get Username 
+        // Get Username
         val ref = FirebaseDatabase.getInstance().getReference("/users/$chatFriendId")
         ref.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val user = snapshot.getValue(User::class.java)
-                viewHolder.itemView.tvUsername.text = user?.username
+                chatFriendUser  = snapshot.getValue(User::class.java)
+                viewHolder.itemView.tvUsername.text = chatFriendUser?.username
             }
 
             override fun onCancelled(p0: DatabaseError) {}
