@@ -1,11 +1,18 @@
-package com.hva.chatapp
+package com.hva.chatapp.ui
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import com.google.firebase.database.*
-import com.xwray.groupie.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.hva.chatapp.R
+import com.hva.chatapp.model.User
+import com.hva.chatapp.model.UserItem
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.GroupieViewHolder
+
 import kotlinx.android.synthetic.main.activity_new_chat.*
 
 class NewChatActivity : AppCompatActivity() {
@@ -23,6 +30,7 @@ class NewChatActivity : AppCompatActivity() {
         val USER_KEY = "USER_KEY"
     }
 
+    // Get all users from firestore
     private fun getUsers() {
         val ref = FirebaseDatabase.getInstance().getReference("/users")
         ref.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -33,7 +41,6 @@ class NewChatActivity : AppCompatActivity() {
 
                 //Loop through users
                 p0.children.forEach {
-                    Log.d("NewMessage", it.toString())
                     val user = it.getValue(User::class.java)
                     if (user != null) {
                         adapter.add(UserItem(user))
@@ -53,7 +60,7 @@ class NewChatActivity : AppCompatActivity() {
                 rv_newchat.adapter = adapter
             }
 
-            override fun onCancelled(p0: DatabaseError) {       }
+            override fun onCancelled(p0: DatabaseError) {}
         })
     }
 

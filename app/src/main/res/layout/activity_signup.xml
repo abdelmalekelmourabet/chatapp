@@ -4,28 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SignupActivity"
-    android:background="@color/design_default_color_primary">
+    android:background="@color/design_default_color_secondary"
+    tools:context=".authenticate.SignupActivity">
 
     <EditText
         android:id="@+id/etUsernameRegister"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="100dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
         android:autofillHints=""
         android:background="@drawable/et_round"
         android:ems="10"
         android:hint="@string/username"
         android:inputType="textPersonName"
         android:paddingStart="16dp"
-        android:paddingLeft="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnPhoto"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="RtlSymmetry" />
 
     <EditText
@@ -39,7 +36,6 @@
         android:hint="@string/email"
         android:inputType="textEmailAddress"
         android:paddingStart="16dp"
-        android:paddingLeft="16dp"
         app:layout_constraintEnd_toEndOf="@+id/etUsernameRegister"
         app:layout_constraintStart_toStartOf="@+id/etUsernameRegister"
         app:layout_constraintTop_toBottomOf="@+id/etUsernameRegister"
@@ -56,7 +52,6 @@
         android:hint="@string/password"
         android:inputType="textPassword"
         android:paddingStart="16dp"
-        android:paddingLeft="16dp"
         app:layout_constraintEnd_toEndOf="@+id/etEmailRegister"
         app:layout_constraintStart_toStartOf="@+id/etEmailRegister"
         app:layout_constraintTop_toBottomOf="@+id/etEmailRegister"
@@ -91,22 +86,5 @@
         app:layout_constraintEnd_toEndOf="@+id/btnRegister"
         app:layout_constraintStart_toStartOf="@+id/btnRegister"
         app:layout_constraintTop_toBottomOf="@+id/btnRegister" />
-
-    <Button
-        android:id="@+id/btnPhoto"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:background="@drawable/btn_photo_round"
-        android:text="@string/select_photo"
-        android:textColor="@android:color/white"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

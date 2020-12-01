@@ -1,12 +1,14 @@
-package com.hva.chatapp
+package com.hva.chatapp.authenticate
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import com.hva.chatapp.ui.HomeActivity
+import com.hva.chatapp.R
+import com.hva.chatapp.model.User
 import kotlinx.android.synthetic.main.activity_signup.*
 
 class SignupActivity : AppCompatActivity() {
@@ -43,8 +45,6 @@ class SignupActivity : AppCompatActivity() {
                 if (!it.isSuccessful) return@addOnCompleteListener
 
                 it.result?.user?.let { it1 -> saveUserToFirebase(it1.uid) }
-                Log.d("signup", "save user in db")
-
             }
 
             .addOnFailureListener {
@@ -70,7 +70,6 @@ class SignupActivity : AppCompatActivity() {
 
             }
             .addOnFailureListener {
-                Log.d("signup", "Failed to set value to database: ${it.message}")
             }
     }
 }

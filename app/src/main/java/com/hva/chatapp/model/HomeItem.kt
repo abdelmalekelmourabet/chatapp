@@ -1,27 +1,28 @@
-package com.hva.chatapp
+package com.hva.chatapp.model
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.hva.chatapp.R
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item
 import kotlinx.android.synthetic.main.home_item.view.*
 
 
-class HomeItem(val chatMessage: ChatMessage) : Item<GroupieViewHolder>() {
+class HomeItem(val message: Message) : Item<GroupieViewHolder>() {
     var chatFriendUser: User? = null
 
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-        viewHolder.itemView.tvLatestMessage.text = chatMessage.text
+        viewHolder.itemView.tvLatestMessage.text = message.text
 
         // Find username in database
         val chatFriendId: String
-        if (chatMessage.fromId == FirebaseAuth.getInstance().uid) {
-            chatFriendId = chatMessage.toId
+        if (message.fromId == FirebaseAuth.getInstance().uid) {
+            chatFriendId = message.toId
         } else {
-            chatFriendId = chatMessage.fromId
+            chatFriendId = message.fromId
         }
 
         // Get Username

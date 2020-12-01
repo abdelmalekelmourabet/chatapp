@@ -1,11 +1,12 @@
-package com.hva.chatapp
+package com.hva.chatapp.authenticate
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.hva.chatapp.ui.HomeActivity
+import com.hva.chatapp.R
 import kotlinx.android.synthetic.main.activity_signin.*
 
 class SigninActivity : AppCompatActivity() {
@@ -20,9 +21,11 @@ class SigninActivity : AppCompatActivity() {
         }
 
         tvBackToRegister.setOnClickListener {
-            finish()
+            val intent = Intent(this, SignupActivity::class.java)
+            startActivity(intent)
         }
     }
+
 
     private fun performLogin() {
         val email = etEmailLogin.text.toString()
@@ -41,8 +44,6 @@ class SigninActivity : AppCompatActivity() {
                 val intent = Intent(this, HomeActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
-
-                Log.d("Login", "Successfully logged in: ${it.result?.user?.uid}")
             }
             .addOnFailureListener {
                 Toast.makeText(this, failedCreateUser + " ${it.message}", Toast.LENGTH_SHORT).show()

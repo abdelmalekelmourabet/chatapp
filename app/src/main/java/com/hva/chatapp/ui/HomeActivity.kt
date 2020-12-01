@@ -1,15 +1,20 @@
-package com.hva.chatapp
+package com.hva.chatapp.ui
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.*
+import android.view.Menu
+import android.view.MenuItem
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.hva.chatapp.R
+import com.hva.chatapp.authenticate.SigninActivity
+import com.hva.chatapp.model.HomeItem
+import com.hva.chatapp.model.Message
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import kotlinx.android.synthetic.main.activity_home.*
@@ -34,7 +39,9 @@ class HomeActivity : AppCompatActivity() {
     }
 
     val adapter = GroupAdapter<GroupieViewHolder>()
-    val homeMap = HashMap<String, ChatMessage>()
+
+    //Get all values
+    val homeMap = HashMap<String, Message>()
 
     private fun refreshRecyclerViewHome() {
         adapter.clear()
@@ -43,19 +50,25 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
+    private fun navigateToChat(){
+
+    }
+
     private fun listenForHomeMessages() {
         val fromId = FirebaseAuth.getInstance().uid
         val ref = FirebaseDatabase.getInstance().getReference("/home-messages/$fromId")
         ref.addChildEventListener(object : ChildEventListener {
 
+            // Print latest messages
             override fun onChildAdded(p0: DataSnapshot, p1: String?) {
-                val chatMessage = p0.getValue(ChatMessage::class.java) ?: return
+                val chatMessage = p0.getValue(Message::class.java) ?: return
                 homeMap[p0.key!!] = chatMessage
                 refreshRecyclerViewHome()
             }
 
+            // Replace latest message with new one
             override fun onChildChanged(p0: DataSnapshot, p1: String?) {
-                val chatMessage = p0.getValue(ChatMessage::class.java) ?: return
+                val chatMessage = p0.getValue(Message::class.java) ?: return
                 homeMap[p0.key!!] = chatMessage
                 refreshRecyclerViewHome()
             }
@@ -71,9 +84,9 @@ class HomeActivity : AppCompatActivity() {
         val uid = FirebaseAuth.getInstance().uid
 
         if (uid == null) {
-            val intent = Intent(this, SignupActivity::class.java)
+            val intent = Intent(this, SigninActivity::class.java)
 
-            //Prevent going back to Signup page
+            //Prevent going back to Signin page
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
         }
@@ -89,7 +102,7 @@ class HomeActivity : AppCompatActivity() {
 
             R.id.menu_sign_out -> {
                 FirebaseAuth.getInstance().signOut()
-                val intent = Intent(this, SignupActivity::class.java)
+                val intent = Intent(this, SigninActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
             }
